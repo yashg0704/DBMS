@@ -1,0 +1,65 @@
+{% extends 'management/base.html' %}
+
+{% block title %}Department Details{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2 class="mt-4">Department Details</h2>
+    
+    <div class="card mb-4">
+        <div class="card-body">
+            <h3 class="card-title">Department Information</h3>
+            <p><strong>Name:</strong> {{ department.name }}</p>
+            <p>
+                <strong>Department Head:</strong> 
+                {% if department.head %}
+                    {{ department.head.first_name }} {{ department.head.last_name }}
+                {% else %}
+                    <span class="text-muted">Not Assigned</span>
+                {% endif %}
+                <a href="{% url 'department_update' department.id %}" class="btn btn-warning btn-sm ms-2">
+                    {% if department.head %}Update{% else %}Assign{% endif %} Head
+                </a>
+            </p>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-body">
+            <h3 class="card-title">Faculty Members</h3>
+            {% if faculty_members %}
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Hire Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for faculty in faculty_members %}
+                        <tr>
+                            <td>{{ faculty.first_name }} {{ faculty.last_name }}</td>
+                            <td>{{ faculty.email }}</td>
+                            <td>{{ faculty.hire_date }}</td>
+                            <td>
+                                <a href="{% url 'faculty_detail' faculty.id %}" class="btn btn-info btn-sm">View</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p class="text-muted">No faculty members in this department.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="mt-3">
+        <a href="{% url 'department_list' %}" class="btn btn-secondary">Back to Departments</a>
+        <a href="{% url 'department_update' department.id %}" class="btn btn-warning">Edit Department</a>
+        <a href="{% url 'department_delete' department.id %}" class="btn btn-danger">Delete Department</a>
+    </div>
+</div>
+{% endblock %}

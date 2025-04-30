@@ -1,0 +1,32 @@
+{% extends 'management/base.html' %}
+
+{% block title %}Students{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2 class="mt-4">Student List</h2>
+    <a href="{% url 'student_form' %}" class="btn btn-primary mb-3">Add New Student</a>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Enrollment Date</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for student in students %}
+            <tr>
+                <td>{{ student.first_name }} {{ student.last_name }}</td>
+                <td>{{ student.email }}</td>
+                <td>{{ student.enrollment_date }}</td>
+                <td>
+                    <a href="{% url 'student_detail' student.id %}" class="btn btn-info btn-sm">View</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

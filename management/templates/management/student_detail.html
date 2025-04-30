@@ -1,0 +1,57 @@
+{% extends 'management/base.html' %}
+
+{% block title %}Student Details{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2 class="mt-4">Student Details</h2>
+    <div class="card mb-4">
+        <div class="card-body">
+            <h3 class="card-title">Personal Information</h3>
+            <p><strong>Name:</strong> {{ student.first_name }} {{ student.last_name }}</p>
+            <p><strong>Email:</strong> {{ student.email }}</p>
+            <p><strong>Date of Birth:</strong> {{ student.date_of_birth }}</p>
+            <p><strong>Enrollment Date:</strong> {{ student.enrollment_date }}</p>
+        </div>
+    </div>
+    <div class="card mb-4">
+        <div class="card-body">
+            <h3 class="card-title">Enrolled Courses</h3>
+            {% if enrollments %}
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Course Code</th>
+                            <th>Course Title</th>
+                            <th>Department</th>
+                            <th>Credits</th>
+                            <th>Faculty</th>
+                            <th>Enrollment Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for enrollment in enrollments %}
+                        <tr>
+                            <td>{{ enrollment.course.code }}</td>
+                            <td>{{ enrollment.course.title }}</td>
+                            <td>{{ enrollment.course.department }}</td>
+                            <td>{{ enrollment.course.credits }}</td>
+                            <td>{{ enrollment.course.faculty }}</td>
+                            <td>{{ enrollment.enrollment_date }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p class="text-muted">This student is not enrolled in any courses.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="mt-3">
+        <a href="{% url 'student_list' %}" class="btn btn-secondary">Back to Students</a>
+        <a href="{% url 'student_update' student.id %}" class="btn btn-warning">Edit Student</a>
+        <a href="{% url 'student_delete' student.id %}" class="btn btn-danger">Delete Student</a>
+    </div>
+</div>
+{% endblock %}

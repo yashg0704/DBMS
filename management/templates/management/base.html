@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <title>Campus Connect</title>
+    <style>
+        nav {
+            background-color: #f8f9fa;
+            padding: 1rem;
+            margin-bottom: 2rem;
+        }
+        nav a {
+            margin-right: 1rem;
+            text-decoration: none;
+            color: #333;
+        }
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+        th, td {
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        .messages {
+            list-style: none;
+            padding: 0;
+        }
+        .messages li {
+            padding: 1rem;
+            margin-bottom: 0.5rem;
+            border-radius: 4px;
+        }
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="{% url 'home' %}">Home</a>
+        <a href="{% url 'student_list' %}">Students</a>
+        <a href="{% url 'faculty_list' %}">Faculty</a>
+        <a href="{% url 'department_list' %}">Departments</a>
+        <a href="{% url 'course_list' %}">Courses</a>
+        <a href="{% url 'enrollment_list' %}">Enrollments</a>
+    </nav>
+
+    <div class="container">
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li class="{{ message.tags }}">{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        {% block content %}
+        {% endblock %}
+    </div>
+    <!-- Bootstrap JS (for modals to work) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

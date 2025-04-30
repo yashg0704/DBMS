@@ -1,0 +1,18 @@
+{% extends "management/base.html" %}
+
+{% block content %}
+    <h2>Courses for {{ student.first_name }} {{ student.last_name }}</h2>
+    
+    {% if courses %}
+        <ul>
+            {% for course in courses %}
+                <li>
+                    <a href="{% url 'course_detail' course.0 %}">{{ course.1 }}</a> 
+                    {# course.0 -> Course ID, course.1 -> Course Title #}
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No courses found.</p>
+    {% endif %}
+{% endblock %}

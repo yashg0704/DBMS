@@ -1,0 +1,14 @@
+{% extends 'management/base.html' %}
+
+{% block content %}
+<h2>Enroll Student</h2>
+
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}  {# This renders the form properly #}
+
+    <button type="submit" class="btn btn-success">Enroll</button>
+</form>
+
+<a href="{% url 'enrollment_list' %}">Back to Enrollments</a>
+{% endblock %}
