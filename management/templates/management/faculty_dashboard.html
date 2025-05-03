@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Faculty Dashboard</title>
+</head>
+<body>
+    <h1>Welcome, {{ faculty.first_name }} {{ faculty.last_name }}</h1>
+    <p><strong>Email:</strong> {{ faculty.email }}</p>
+    <p><strong>Department:</strong> {{ faculty.department.name }}</p>
+    <p><strong>Hire Date:</strong> {{ faculty.hire_date }}</p>
+
+    <h2>Courses You Teach</h2>
+    <ul>
+        {% for course in courses %}
+            <li>{{ course.code }} - {{ course.title }} ({{ course.credits }} credits)</li>
+        {% empty %}
+            <li>No courses assigned.</li>
+        {% endfor %}
+    </ul>
+
+    <a href="{% url 'user_logout' %}">Logout</a>
+</body>
+</html>

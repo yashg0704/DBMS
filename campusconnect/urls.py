@@ -16,11 +16,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from management.views import home  # Import the home view
+from management.views import user_login  # Import the home view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('management/', include('management.urls')),  # Include management app URLs
-    path('', home, name='home'),  # Add this line to set the homepage
+    path('', user_login, name='login'),  # Add this line to set the homepage
 ]
 

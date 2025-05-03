@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student Dashboard</title>
+</head>
+<body>
+    <h1>Welcome, {{ student.first_name }} {{ student.last_name }}</h1>
+    <p><strong>Email:</strong> {{ student.email }}</p>
+    <p><strong>Date of Birth:</strong> {{ student.date_of_birth }}</p>
+    <p><strong>Enrollment Date:</strong> {{ student.enrollment_date }}</p>
+
+    <h2>Enrolled Courses</h2>
+    <ul>
+        {% for enrollment in courses %}
+            <li>{{ enrollment.course.code }} - {{ enrollment.course.title }} ({{ enrollment.course.credits }} credits)</li>
+        {% empty %}
+            <li>No courses enrolled.</li>
+        {% endfor %}
+    </ul>
+
+    <a href="{% url 'user_logout' %}">Logout</a>
+</body>
+</html>

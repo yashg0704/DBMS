@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Access Denied</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 50px;
+        }
+        .container {
+            margin: auto;
+            padding: 20px;
+            border: 2px solid #ff4d4d;
+            background-color: #fff0f0;
+            width: 50%;
+            border-radius: 10px;
+        }
+        h1 {
+            color: #cc0000;
+        }
+        a {
+            color: #0066cc;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Access Denied 🚫</h1>
+        <p>You do not have permission to view this page.</p>
+        <p><a href="{% url 'login' %}">Return to Login</a></p>
+    </div>
+</body>
+</html>

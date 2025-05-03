@@ -6,6 +6,57 @@ from django.db import transaction
 from django.http import HttpResponse
 from django.http import JsonResponse
 from django.db import connection
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import authenticate, login, logout
+from .models import UserProfile
+from django.contrib.auth.models import User
+
+def user_login(request):
+    if request.method == "POST":
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(request, username=username, password=password)
+        if user:
+            login(request, user)
+            role = user.userprofile.role
+            if role == 'student':
+                return redirect('student_dashboard')
+            elif role == 'faculty':
+                return redirect('faculty_dashboard')
+            elif role == 'admin':
+                return redirect('admin_dashboard')
+        else:
+            return render(request, 'management/login.html', {'error': 'Invalid credentials'})
+    return render(request, 'management/login.html')
+
+def user_logout(request):
+    logout(request)
+    return redirect('login')  # Or redirect to a goodbye page
+
+def no_permission(request):
+    return render(request, 'management/no_permission.html')
+
+@login_required
+def student_dashboard(request):
+    if request.user.userprofile.role != 'student':
+        return redirect('no_permission')
+    student = Student.objects.get(user=request.user)
+    courses = Enrollment.objects.filter(student=student)
+    return render(request, 'management/student_dashboard.html', {'student': student, 'courses': courses})
+
+@login_required
+def faculty_dashboard(request):
+    if request.user.userprofile.role != 'faculty':
+        return redirect('no_permission')
+    faculty = Faculty.objects.get(user=request.user)
+    courses = Course.objects.filter(faculty=faculty)
+    return render(request, 'management/faculty_dashboard.html', {'faculty': faculty, 'courses': courses})
+
+@login_required
+def admin_dashboard(request):
+    if request.user.userprofile.role != 'admin':
+        return redirect('no_permission')
+    return render(request, 'management/admin_dashboard.html')
 
 def get_student_courses(request, student_id):
     student = get_object_or_404(Student, id=student_id)
@@ -41,8 +92,21 @@ def student_form(request):
     if request.method == "POST":
         form = StudentForm(request.POST)
         if form.is_valid():
-            form.save()
-            messages.success(request, "Student added successfully!")
+            student = form.save(commit=False)
+            first_name = form.cleaned_data['first_name']
+            email = form.cleaned_data['email']
+            date_of_birth = form.cleaned_data['date_of_birth']
+
+            # Generate password
+            password = first_name[:3].lower() + date_of_birth.strftime('%d-%m-%y')
+
+            # Create user
+            user = User.objects.create_user(username=email, email=email, password=password)
+
+            student.user = user
+            student.save()
+
+            messages.success(request, f"Student added successfully! Default password: {password}")
             return redirect('student_list')
     else:
         form = StudentForm()
@@ -69,16 +133,38 @@ def student_delete(request, student_id):
     return render(request, 'management/student_confirm_delete.html', {'student': student})
 
 # Faculty Views
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from django.contrib.auth.models import User
+from .forms import FacultyForm
+from .models import Faculty
+
 def faculty_form(request):
     if request.method == "POST":
         form = FacultyForm(request.POST)
         if form.is_valid():
-            form.save()
-            messages.success(request, "Faculty member added successfully!")
+            faculty = form.save(commit=False)
+            first_name = form.cleaned_data['first_name']
+            email = form.cleaned_data['email']
+            hire_date = form.cleaned_data['hire_date']
+
+            # Generate password
+            password = first_name[:3].lower() + hire_date.strftime('%d-%m-%y')
+
+            # Create user
+            user = User.objects.create_user(username=email, email=email, password=password)
+
+            faculty.user = user
+            faculty.save()
+
+            # No need to manually create the UserProfile here
+            # The signal will automatically create the profile with role='faculty'
+
+            messages.success(request, f"Faculty member added successfully! Default password: {password}")
             return redirect('faculty_list')
     else:
         form = FacultyForm()
-    return render(request, 'management/form_template.html', {'form': form, 'title': 'Add Faculty'})
+    return render(request, 'management/faculty_form.html', {'form': form, 'title': 'Add Faculty'})
 
 def faculty_list(request):
     faculties = Faculty.objects.all()

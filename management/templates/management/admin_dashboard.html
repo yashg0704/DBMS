@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f7f9;
+            padding: 20px;
+        }
+        h1 {
+            color: #333;
+        }
+        .section {
+            margin-bottom: 30px;
+        }
+        .section h2 {
+            margin-bottom: 10px;
+            color: #007bff;
+        }
+        .section ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .section li {
+            margin: 5px 0;
+        }
+        a {
+            color: #0056b3;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .logout {
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Welcome to Admin Dashboard</h1>
+
+    <div class="section">
+        <h2>Manage Students</h2>
+        <ul>
+            <li><a href="{% url 'student_list' %}">View All Students</a></li>
+            <li><a href="{% url 'student_form' %}">Add New Student</a></li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>Manage Faculty</h2>
+        <ul>
+            <li><a href="{% url 'faculty_list' %}">View All Faculty</a></li>
+            <li><a href="{% url 'faculty_form' %}">Add New Faculty</a></li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>Manage Departments</h2>
+        <ul>
+            <li><a href="{% url 'department_list' %}">View All Departments</a></li>
+            <li><a href="{% url 'department_form' %}">Add New Department</a></li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>Manage Courses</h2>
+        <ul>
+            <li><a href="{% url 'course_list' %}">View All Courses</a></li>
+            <li><a href="{% url 'course_form' %}">Add New Course</a></li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>Manage Enrollments</h2>
+        <ul>
+            <li><a href="{% url 'enrollment_list' %}">View All Enrollments</a></li>
+            <li><a href="{% url 'enrollment_form' %}">Add New Enrollment</a></li>
+        </ul>
+    </div>
+
+    <div class="logout">
+        <a href="{% url 'user_logout' %}">Logout</a>
+    </div>
+
+</body>
+</html>
